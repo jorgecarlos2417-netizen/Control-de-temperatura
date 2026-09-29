@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de control</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+    .card { max-width: 480px; margin: 0 auto; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h1 { font-size: 20px; color: #2c3e50; margin-top: 0; }
+    .tiles { display: flex; gap: 8px; margin: 14px 0; }
+    .tile { flex: 1; background: #f9fafb; border: 1px solid #e1e7ea; border-radius: 8px; padding: 10px; text-align: center; }
+    .tile .num { font-size: 20px; font-weight: bold; }
+    .tile .lbl { font-size: 11px; color: #666; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    th, td { padding: 8px 6px; text-align: left; border-bottom: 1px solid #eee; }
+    .pill { padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: bold; }
+    .ok { background: #e6f5ec; color: #2f9e58; }
+    .warn { background: #fbf1de; color: #c98a1f; }
+    .bad { background: #fbeae9; color: #c4453d; }
+    a { display: block; text-align: center; margin-top: 16px; color: #2E7D9A; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Panel de control de temperatura</h1>
+    <div class="tiles">
+      <div class="tile"><div class="num">{{ total }}</div><div class="lbl">Mediciones</div></div>
+      <div class="tile"><div class="num">{{ porcentaje_ok }}%</div><div class="lbl">Dentro de norma</div></div>
+      <div class="tile"><div class="num">{{ alerta_count }}</div><div class="lbl">Alertas</div></div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Línea</th><th>Temp.</th><th>Operario</th><th>Estado</th></tr>
+      </thead>
+      <tbody>
+        {% for m in mediciones %}
+        <tr>
+          <td>{{ m.linea }}</td>
+          <td>{{ "%.1f"|format(m.temperatura) }}°C</td>
+          <td>{{ m.operario }}</td>
+          <td>
+            {% if m.estado == "OK" %}
+              <span class="pill ok">OK</span>
+            {% elif m.estado == "Cerca del limite" %}
+              <span class="pill warn">Cerca del límite</span>
+            {% else %}
+              <span class="pill bad">Fuera de norma</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="/">← Registrar nueva medición</a>
+  </div>
+</body>
+</html>

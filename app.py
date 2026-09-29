@@ -117,7 +117,7 @@ def dashboard():
         alerta_count=alerta_count,
     )
 
-
+init_db()
 if __name__ == "__main__":
     init_db()
     # host="0.0.0.0" es lo que permite que OTROS dispositivos en la misma
